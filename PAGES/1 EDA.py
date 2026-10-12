@@ -4,8 +4,8 @@ import plotly.express as px
 
 st.set_page_config(page_title="EDA", layout="wide")
 
-df = pd.read_csv("House_clean_data.csv")
-
+df = pd.read_csv("HOUSEHOLD_DATA.csv")
+df = df.loc[:, ~df.columns.str.startswith("Unnamed:")]
 st.title("Exploratory Data Analysis")
 
 tab1, tab2, tab3 = st.tabs(["Dataset", "Visualizations", "Insights"])
@@ -53,7 +53,7 @@ with tab2:
         df,
         x=x,
         y=y,
-        color="DayName",
+        color="Day",
         hover_data=df.columns
     )
 
@@ -72,7 +72,7 @@ with tab2:
 
     st.plotly_chart(fig, use_container_width=True)
 
-    if "Hour" in df.columns:
+    if "hour" in df.columns:
 
         st.subheader("Average Value by Hour")
 
@@ -82,11 +82,11 @@ with tab2:
             key="hour"
         )
 
-        temp = df.groupby("Hour")[value].mean().reset_index()
+        temp = df.groupby("hour")[value].mean().reset_index()
 
         fig = px.line(
             temp,
-            x="Hour",
+            x="hour",
             y=value,
             markers=True
         )
